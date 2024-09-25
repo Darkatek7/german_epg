@@ -4,15 +4,30 @@ import os
 import requests
 import base64
 
+# Function to get the current sha of the file in the repository
+def get_file_sha(repo, path, token):
+    url = f"https://api.github.com/repos/{repo}/contents/{path}"
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json().get('sha')
+    return None
+
 # Function to upload the XML file to GitHub
 def upload_to_github(repo, path, token, file_path):
     url = f"https://api.github.com/repos/{repo}/contents/{path}"
     with open(file_path, "rb") as file:
         content = base64.b64encode(file.read()).decode()
     
+    sha = get_file_sha(repo, path, token)
+    
     data = {
         "message": "Upload epg.xml",
-        "content": content
+        "content": content,
+        "sha": sha
     }
     
     headers = {
@@ -21,11 +36,10 @@ def upload_to_github(repo, path, token, file_path):
     }
     
     response = requests.put(url, json=data, headers=headers)
-    if response.status_code == 201:
+    if response.status_code in [200, 201]:
         print(f"Successfully uploaded {file_path} to GitHub.")
     else:
         print(f"Failed to upload {file_path} to GitHub. Status code: {response.status_code}, Response: {response.json()}")
-
 
 # Function to download the XML file from a URL
 def download_xml(url, local_path):
@@ -94,7 +108,7 @@ update_xml_ids_and_channels(local_xml_file)
 # GitHub repository details
 repo = "Darkatek7/german_epg"  # Replace with your GitHub username and repository name
 path = "epg.xml"  # Replace with the path where you want to upload the file in the repository
-token = os.getenv("GITHUB_TOKEN")  # Read the token from the environment variable
+token = "secret"
 
 # Upload the updated XML file to GitHub
 upload_to_github(repo, path, token, "/home/heel/epg/epg.xml")
