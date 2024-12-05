@@ -141,3 +141,9 @@ http://149.62.183.209:4549/play/a09u/index.m3u8
 http://149.62.183.209:4549/play/a04q/index.m3u8
 #EXTINF:-1,oe24.TV HD
 http://149.62.183.209:4549/play/a09v/index.m3u8
+#EXTINF:-1,SERVUS TV HD Deutschland
+http://hdiosstv-f.akamaihd.net/i/servustvhdde_1@75540/master.m3u8
+#EXTINF:-1,sky Sport News HD
+http://event_rtmp-lh.akamaihd.net/i/ssnhd_1@433299/master.m3u8
+#EXTINF:-1, Disney Channel
+https://delivestream-lh.akamaihd.net/i/live_1@320996/master.m3u8
